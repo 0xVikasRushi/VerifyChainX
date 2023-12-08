@@ -1,5 +1,5 @@
-import {NativeBaseProvider, Text, View} from 'native-base';
-import React from 'react';
+import { NativeBaseProvider, Text, View } from "native-base";
+import React from "react";
 
 function App(): React.JSX.Element {
   return (
