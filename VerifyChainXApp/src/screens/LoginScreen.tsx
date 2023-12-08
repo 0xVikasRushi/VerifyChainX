@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { AppStackScreenProps } from "../types";
 
-type LoginScreen = AppStackScreenProps<"ProfileScreen">;
+type LoginScreen = AppStackScreenProps<"LoginScreen">;
 const ProfileScreen: React.FC<LoginScreen> = () => {
   return (
     <View>
