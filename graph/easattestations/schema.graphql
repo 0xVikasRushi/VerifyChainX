@@ -1,0 +1,40 @@
+type Attested @entity(immutable: true) {
+  id: Bytes!
+  recipient: Bytes! # address
+  attester: Bytes! # address
+  uid: Bytes! # bytes32
+  schema: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Revoked @entity(immutable: true) {
+  id: Bytes!
+  recipient: Bytes! # address
+  attester: Bytes! # address
+  uid: Bytes! # bytes32
+  schema: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RevokedOffchain @entity(immutable: true) {
+  id: Bytes!
+  revoker: Bytes! # address
+  data: Bytes! # bytes32
+  timestamp: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Timestamped @entity(immutable: true) {
+  id: Bytes!
+  data: Bytes! # bytes32
+  timestamp: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
