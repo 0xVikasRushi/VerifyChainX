@@ -1,13 +1,16 @@
 import { ChangeEvent, useState } from "react";
 import { extractSignature } from "./utils/extractSignature";
-import { AadhaarPdfValidation } from "./types/interface";
+import { AadhaarPdfValidation, AnonAadhaarPCDClaim } from "./types/interface";
 import { MagnifyingGlass } from "react-loader-spinner";
+import { extractWitness } from "./utils/extractWitness";
 
 export default function Home() {
   const [filename, setFileName] = useState<Blob | null>(null);
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [pdfStatus, setpdfStatus] = useState<"" | AadhaarPdfValidation>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [pdfData, setPdfData] = useState<Buffer>(Buffer.from([]));
+  const [loadingStatus, setLoadingStatus] = useState("");
 
   const handleFileRead = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -56,19 +59,27 @@ export default function Home() {
   };
 
   // ! TODO: CAL PROOF
-  const handleProof = () => {
+  const ProofGenerate = async () => {
     setIsLoading(true);
-    handleUpload()
-      .then((res) => {
-        console.log(res);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
+    setLoadingStatus("Generating proof");
 
+    const { pdf, signature, signedData } = await handleUpload();
+
+    setPdfData(pdf);
+    try {
+      // ? cal witness
+      const witness = await extractWitness(
+        pdf,
+        password,
+        signature,
+        signedData
+      );
+
+      console.log(witness);
+    } catch (error) {
+      throw new Error("Cannot make proof: something went wrong!");
+    }
+  };
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
