@@ -1,0 +1,10 @@
+type AttestationAdded @entity(immutable: true) {
+  id: Bytes!
+  attester: Bytes! # address
+  recipient: Bytes! # address
+  uid: Bytes! # bytes32
+  schema: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
