@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import createRoute from "./routes/create.js";
+import voteRoute from "./routes/vote.js";
+import eventDetails from "./routes/eventDetails.js";
+import allEvents from './routes/allEvents.js';
+import deleteEvent from './routes/deleteEvent.js';
 
 import "./models/event.model.js"
 import "./models/voter.model.js";
@@ -31,6 +35,12 @@ mongoose.connection.on("error", (err) => {
 /*****************  ROUTES ********************************************  */
 
 app.use("/api", createRoute);
+app.use("/api", voteRoute);
+app.use("/api", eventDetails);
+app.use("/api", allEvents);
+app.use("/api", deleteEvent);
+
+
 
 
 app.get("/", (req, res) => {
