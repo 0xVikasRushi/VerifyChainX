@@ -55,6 +55,7 @@ router.post('/qvote/:eventuuid/:voter_address', async (req, res) => {
       eventSubjects.forEach(subject => {
         voterProjects[subject.title] = subject.title === project_name ? votes : 0;
       });
+         const { uid }  = await submitVoterAttestation(checkEventuuid.attestation_uid ,voter_name , voter_address ,project_name , votes);
          await Voters.create({
             event_uuid: eventuuid,
             event_attestation_uid :checkEventuuid.attestation_uid,
@@ -62,7 +63,7 @@ router.post('/qvote/:eventuuid/:voter_address', async (req, res) => {
             voter_address: voter_address,
             vote_data: voterProjects,
             projects_attestations : {
-              [project_name]: "" !== '' ? "" : '',
+              [project_name]: uid !== '' ? uid : '',
             }
 
         });
@@ -73,6 +74,8 @@ router.post('/qvote/:eventuuid/:voter_address', async (req, res) => {
     }
     else{
       try{
+      const { uid }  = await submitVoterAttestation(checkEventuuid.attestation_uid ,voter_name , voter_address ,project_name , votes);
+      console.log(uid);
         await Voters.findOneAndUpdate(
             { event_uuid : eventuuid , voter_address: voter_address },
             {
@@ -86,7 +89,7 @@ router.post('/qvote/:eventuuid/:voter_address', async (req, res) => {
             },
             projects_attestations : {
               ...findVoter.projects_attestations,
-              [project_name]: "" !== '' ? "" : '',
+              [project_name]: uid !== '' ? uid : '',
             }
         },
         { new: true }
@@ -96,8 +99,6 @@ router.post('/qvote/:eventuuid/:voter_address', async (req, res) => {
         return res.status(500).json({error : 'Invalid wallet addresss'});
       }
     }
-    //  await votingContract.vote(project_name,votes);
-    // const getTotalVotesofUser = await votingContract.getVotesofUser(voter_address);
       return res.status(200).json({ message: 'Votes updated successfully' });
   } catch (error) {
     console.error(error);

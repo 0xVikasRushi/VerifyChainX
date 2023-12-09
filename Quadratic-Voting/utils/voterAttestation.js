@@ -38,7 +38,7 @@ async function submitVoterAttestation(eventUid ,voter_name , voter_address , pro
   });
 
   const newAttestationUID = await tx.wait();
-console.log(newAttestationUID);
+  return { uid: newAttestationUID };
 }
 
-submitVoterAttestation("0x0c6b70897e96046b7a37455ed2b60e9a46d524996a41e4b59a37d8b580e299b6" , "voter1" , "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4" , "project1" , 1)
+export default submitVoterAttestation;

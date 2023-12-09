@@ -12,7 +12,7 @@ router.get('/details/:id/:secret_key?', async (req, res) => {
     if (!event) {
       return res.status(404).send('Event not found');
     }
-    // Assuming isAdmin logic, uncomment if needed
+        // Assuming isAdmin logic, uncomment if needed
     // const isAdmin = event.secret_key && event.secret_key === secret_key;
     // delete event.secret_key;
 
