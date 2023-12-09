@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { AadhaarPdfValidation } from "./types/interface";
-import { extractSignature, extractWitness } from "./utils";
+import { extractSignature, extractWitness, genArgs } from "./utils";
 
 export default function Home() {
   const [filename, setFileName] = useState<Blob | null>(null);
@@ -82,6 +82,9 @@ export default function Home() {
         console.error("Error extracting witness:", witness.message);
       } else {
         console.log("witness", witness.sigBigInt);
+        const args = genArgs(witness);
+        console.log("args", typeof args);
+        alert("proof arsg");
       }
     } catch (error) {
       throw new Error("Cannot make proof: something went wrong!");

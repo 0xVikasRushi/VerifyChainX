@@ -1,3 +1,4 @@
 import { extractSignature } from "./extractSignature";
 import { extractWitness } from "./extractWitness";
-export { extractSignature, extractWitness };
+import { genArgs } from "./genArgs";
+export { extractSignature, extractWitness, genArgs };
