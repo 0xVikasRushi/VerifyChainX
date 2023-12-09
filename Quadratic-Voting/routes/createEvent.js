@@ -3,6 +3,7 @@ import moment from 'moment';
 const router = express.Router();
 import Events from '../models/event.model.js';
 import Voters from '../models/voter.model.js';
+import submitAttestation from '../utils/eventAttestation.js';
 router.post('/create/:host_address', async (req, res) => {
   const event = req.body;
   const host_address = req.params.host_address;
@@ -24,7 +25,7 @@ router.post('/create/:host_address', async (req, res) => {
       event_title: event.event_title,
       event_description: event.event_description,
       event_owner: host_address,
-      attestation_uid : "",
+      attestation_uid : event.attestation_uid,
       num_voters: event.num_voters,
       credits_per_voter: event.credits_per_voter,
       start_event_date: moment(event.start_event_date).toDate(),
@@ -51,14 +52,16 @@ router.post('/create/:host_address', async (req, res) => {
       event_endedAt: fetchedEvent.end_event_date.toString(),
       isCompleted : isCompleted,
     };
+    const { uid, eventData: attestedEventData } = await submitAttestation(eventData);
+    console.log(uid)
 
     await Events.findOneAndUpdate(
       { id: fetchedEvent.id },
-       { attestation_uid: "" },
+       { attestation_uid: uid },
         { new: true }
       );
 
-    res.send({ message : " Event created successfully " });
+    res.send({ message : " Event created successfully ", uid , eventData: attestedEventData });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error' + error);
