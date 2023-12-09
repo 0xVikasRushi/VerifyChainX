@@ -2,6 +2,8 @@ import { ChangeEvent, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { AadhaarPdfValidation } from "./types/interface";
 import { extractSignature, extractWitness, genArgs } from "./utils";
+import { genInput } from "./utils/genInput";
+import * as snarkjs from "snarkjs";
 
 export default function Home() {
   const [filename, setFileName] = useState<Blob | null>(null);
@@ -83,7 +85,27 @@ export default function Home() {
       } else {
         console.log("witness", witness.sigBigInt);
         const args = genArgs(witness);
-        console.log("args", typeof args);
+        const input = genInput(args);
+        console.log(input);
+
+        if (input instanceof Error) {
+          throw new Error(
+            "Cannot make proof: something went wrong! in generating input"
+          );
+        }
+
+        console.log(
+          "..............Generating proof............................"
+        );
+
+        setLoadingStatus("Creating proof...");
+
+        // const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+        //   input,
+        //   Wasm_Loc,
+        //   Zkey_Loc
+        // );
+
         alert("proof arsg");
       }
     } catch (error) {
