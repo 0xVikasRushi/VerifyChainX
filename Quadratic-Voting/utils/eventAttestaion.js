@@ -26,7 +26,7 @@ async function submitAttestation(eventData) {
   ]);
 
   const schemaUID =
-    "0xc4190a2f6e7047f8f52e8219f5bb9450c00a36051e1c2c1a56460b4bbc578edc";
+    "0xc4190a2f6e7047f8f52e8219f5bb9450c00a36051e1c2c1a56460b4bbc578edd";
 
   const tx = await eas.attest({
     schema: schemaUID,
