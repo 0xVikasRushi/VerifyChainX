@@ -1,3 +1,6 @@
+//   const schemaUID = "0x14157aa9fe895d6fe29ea4f0f5b453bcc8d939c3b4a6a5ce7bd829e785cf3e7e";
+//! schema with project - string , votes - bytes32 --- 0xf164b8a3b56bcc6f0e61f395507fd20e772efe9a5f09bd789ec9585ac1acdd74
+//! schema with project - string[] , votes - bytes32[] --- 0xccbc007c5e1cd9313a21f18865e96b67cdb3839c609ced57363fe9200066cdc6
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import * as ethers  from "ethers";
 import dotenv from "dotenv";
@@ -10,28 +13,28 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_URL);
 
 const wallet = new ethers.Wallet(privateKey, provider);
 
-async function submitAttestation(eventData) {
+async function submitVoterAttestation(eventUid ,voter_name , voter_address , project , votes) {
   const eas = new EAS(EASContractAddress);
   eas.connect(wallet);
 
-  const schemaEncoder = new SchemaEncoder("string event_uuid,string event_name,string event_description,address event_owner,string event_createdAt,string event_endedAt,bool isCompleted");
+  const schemaEncoder = new SchemaEncoder("string event_attestation_uid,string voter_name,string voter_address,string project,uint32 votes");
   const encodedData = schemaEncoder.encodeData([
-    { name: "event_uuid", value: eventData.event_uuid, type: "string" },
-    { name: "event_name", value: eventData.event_name, type: "string" },
-    { name: "event_description", value: eventData.event_description, type: "string" },
-    { name: "event_owner", value: eventData.event_owner, type: "address" },
-    { name: "event_createdAt", value: eventData.event_createdAt, type: "string" },
-    { name: "event_endedAt", value: eventData.event_endedAt, type: "string" },
-    { name: "isCompleted", value: eventData.isCompleted, type: "bool" },
+    { name: "event_attestation_uid", value: eventUid, type: "string" },
+    { name: "voter_name", value: voter_name, type: "string" },
+    { name: "voter_address", value: voter_address, type: "string" },
+    { name: "project", value: project, type: "string" },
+    { name: "votes", value: votes, type: "uint32" }
   ]);
 
-  const schemaUID =
-    "0xc4190a2f6e7047f8f52e8219f5bb9450c00a36051e1c2c1a56460b4bbc578edd";
 
+  const schemaUID =
+    // "0xf164b8a3b56bcc6f0e61f395507fd20e772efe9a5f09bd789ec9585ac1acdd74";
+    // "0x0c6b70897e96046b7a37455ed2b60e9a46d524996a41e4b59a37d8b580e299b6";
+    "0x7ad74600ab6bf2eb8a3226a56ed27f0ed206f654de18488d0990cea35becb4f9";
   const tx = await eas.attest({
     schema: schemaUID,
     data: {
-      recipient: eventData.event_owner, //! event owner is the receipient or the main admin 
+      recipient: voter_address, //! event owner is the receipient or the main admin 
       expirationTime: 0,
       revocable: true,
       data: encodedData,
@@ -39,7 +42,8 @@ async function submitAttestation(eventData) {
   });
 
   const newAttestationUID = await tx.wait();
-  return { uid: newAttestationUID, eventData };
+  return { uid: newAttestationUID };
 }
 
-export default submitAttestation;
+export default submitVoterAttestation;
+

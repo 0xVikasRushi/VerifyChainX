@@ -1,1 +1,0 @@
-//TODO : calculate votes

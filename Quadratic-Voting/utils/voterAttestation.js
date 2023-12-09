@@ -1,4 +1,6 @@
-
+//   const schemaUID = "0x14157aa9fe895d6fe29ea4f0f5b453bcc8d939c3b4a6a5ce7bd829e785cf3e7e";
+//! schema with project - string , votes - bytes32 --- 0xf164b8a3b56bcc6f0e61f395507fd20e772efe9a5f09bd789ec9585ac1acdd74
+//! schema with project - string[] , votes - bytes32[] --- 0xccbc007c5e1cd9313a21f18865e96b67cdb3839c609ced57363fe9200066cdc6
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import * as ethers  from "ethers";
 import dotenv from "dotenv";
@@ -26,11 +28,11 @@ async function submitVoterAttestation(eventUid ,voter_name , voter_address , pro
 
 
   const schemaUID =
-    "0x7ad74600ab6bf2eb8a3226a56ed27f0ed206f654de18488d0990cea35becb4f8";
+    "0x7ad74600ab6bf2eb8a3226a56ed27f0ed206f654de18488d0990cea35becb4f9";
   const tx = await eas.attest({
     schema: schemaUID,
     data: {
-      recipient: voter_address, 
+      recipient: voter_address, //! event owner is the receipient or the main admin 
       expirationTime: 0,
       revocable: true,
       data: encodedData,
@@ -42,3 +44,4 @@ async function submitVoterAttestation(eventUid ,voter_name , voter_address , pro
 }
 
 export default submitVoterAttestation;
+

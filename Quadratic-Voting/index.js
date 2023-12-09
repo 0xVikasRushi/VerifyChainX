@@ -8,6 +8,8 @@ import voteRoute from "./routes/vote.js";
 import eventDetails from "./routes/eventDetails.js";
 import allEvents from './routes/allEvents.js';
 import deleteEvent from './routes/deleteEvent.js';
+import voterDetails from './routes/getVoterdetails.js'
+import calculatevotes from './routes/calculatevotes.js'
 
 import "./models/event.model.js"
 import "./models/voter.model.js";
@@ -39,6 +41,9 @@ app.use("/api", voteRoute);
 app.use("/api", eventDetails);
 app.use("/api", allEvents);
 app.use("/api", deleteEvent);
+app.use("/api", voterDetails);
+app.use("/api", calculatevotes);
+
 
 
 
