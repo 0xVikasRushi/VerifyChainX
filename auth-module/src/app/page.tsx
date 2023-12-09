@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from "react";
-import { extractSignature } from "./utils/extractSignature";
-import { AadhaarPdfValidation, AnonAadhaarPCDClaim } from "./types/interface";
 import { MagnifyingGlass } from "react-loader-spinner";
-import { extractWitness } from "./utils/extractWitness";
+import { AadhaarPdfValidation } from "./types/interface";
+import { extractSignature, extractWitness } from "./utils";
 
 export default function Home() {
   const [filename, setFileName] = useState<Blob | null>(null);
@@ -11,6 +10,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [pdfData, setPdfData] = useState<Buffer>(Buffer.from([]));
   const [loadingStatus, setLoadingStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFileRead = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -76,6 +76,13 @@ export default function Home() {
       );
 
       console.log(witness);
+
+      if (witness instanceof Error) {
+        setErrorMessage(witness.message);
+        console.error("Error extracting witness:", witness.message);
+      } else {
+        console.log("witness", witness.sigBigInt);
+      }
     } catch (error) {
       throw new Error("Cannot make proof: something went wrong!");
     }
