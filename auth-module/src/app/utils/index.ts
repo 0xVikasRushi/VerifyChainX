@@ -1,4 +1,7 @@
 import { extractSignature } from "./extractSignature";
-import { extractWitness } from "./extractWitness";
 import { genArgs } from "./genArgs";
-export { extractSignature, extractWitness, genArgs };
+import { genInput } from "./genInput";
+import { verifyPCD } from "./verify";
+import { extractWitness } from "./extractWitness";
+
+export { extractSignature, genArgs, genInput, verifyPCD, extractWitness };
