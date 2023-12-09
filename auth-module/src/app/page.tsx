@@ -1,9 +1,17 @@
 import { ChangeEvent, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
-import { AadhaarPdfValidation } from "./types/interface";
+import { AadhaarPdfValidation, AnonAadhaarPCDClaim } from "./types/interface";
 import { extractSignature, extractWitness, genArgs } from "./utils";
 import { genInput } from "./utils/genInput";
 import * as snarkjs from "snarkjs";
+import { Wasm_Loc, Zkey_Loc } from "./shared/constants";
+import { v4 as uuidv4 } from "uuid";
+
+declare global {
+  interface Window {
+    ReactNativeWebView: any;
+  }
+}
 
 export default function Home() {
   const [filename, setFileName] = useState<Blob | null>(null);
@@ -60,7 +68,19 @@ export default function Home() {
     });
   };
 
-  // ! TODO: CAL PROOF
+  const handleGenProof = async () => {
+    console.log("Generating proof");
+    const before = performance.now();
+    const pcd = await ProofGenerate();
+    setLoadingStatus("Verifying proof");
+
+    const message = JSON.stringify(pcd);
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(message);
+    }
+    console.log("time taken", performance.now() - before);
+  };
+
   const ProofGenerate = async () => {
     setIsLoading(true);
     setLoadingStatus("Generating proof");
@@ -99,14 +119,36 @@ export default function Home() {
         );
 
         setLoadingStatus("Creating proof...");
+        const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+          input,
+          Wasm_Loc,
+          Zkey_Loc
+        );
 
-        // const { proof, publicSignals } = await snarkjs.groth16.fullProve(
-        //   input,
-        //   Wasm_Loc,
-        //   Zkey_Loc
-        // );
+        setLoadingStatus("proof genereted");
 
-        alert("proof arsg");
+        console.log(
+          "...........................Proof generated.............................."
+        );
+
+        if (publicSignals === undefined || proof === undefined) {
+          throw new Error("Cannot make proof: something went wrong!");
+        }
+
+        const id = uuidv4();
+
+        const proofv = {
+          modulus: args.modulus.value,
+          nullifier: publicSignals[0],
+          app_id: input.app_id,
+          proof,
+        };
+
+        const claim: AnonAadhaarPCDClaim = {
+          modulus: args.modulus.value ? args.modulus.value : "",
+        };
+
+        return { id, proof: proofv, claim };
       }
     } catch (error) {
       throw new Error("Cannot make proof: something went wrong!");
