@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lucide-react-native": "^0.294.0",
+    "react-native-linear-gradient": "^2.8.3"
+  }
+}
