@@ -13,3 +13,11 @@ export type AppStackScreenProps<T extends keyof AppParamList> = NativeStackScree
   AppParamList,
   T
 >;
+
+export interface CardsProps {
+  title?: string;
+  iconname?: any;
+  fontsize?: string;
+  onPress?: () => void;
+  bgColor?: string;
+}
