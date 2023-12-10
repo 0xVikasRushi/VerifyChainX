@@ -4,15 +4,23 @@ import { ChangeEvent, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import * as snarkjs from "snarkjs";
 import { v4 as uuidv4 } from "uuid";
-import { AadhaarPdfValidation, AnonAadhaarPCDClaim } from "./types/interface";
+import { Signer } from "ethers";
+
 import {
   extractSignature,
   extractWitness,
   genArgs,
   genInput,
   verifyPCD,
-} from "./utils/index";
-import { Wasm_Loc, Zkey_Loc } from "./shared/constants";
+} from "../app/utils";
+import { AadhaarPdfValidation, AnonAadhaarPCDClaim } from "./types/interface";
+import {
+  Wasm_Loc,
+  Zkey_Loc,
+  circularReferenceReplacer,
+  generatedUserInfo,
+} from "./shared/constants";
+import { connectToSmartWallet } from "./shared/wallet";
 
 declare global {
   interface Window {
@@ -170,14 +178,50 @@ const AuthvPage: NextPage = () => {
     setUsername(user);
     setWalletPassword(pass);
 
+    const newsigner = await handleWalletCreation(user, pass);
+    console.log("signer", newsigner);
+    const address = await newsigner?.getAddress();
+    if (newsigner === undefined) return;
     const message = JSON.stringify({
       data: pcd,
+      smartContractWallet: {
+        username: user,
+        password: pass,
+      },
+      address: address,
+      signer: JSON.stringify(newsigner, circularReferenceReplacer()),
     });
+    console.log(address);
     setIsLoading(false);
     if (window.ReactNativeWebView) {
       window.ReactNativeWebView.postMessage(message);
     }
     console.log("time taken", performance.now() - before);
+  };
+
+  const handleWalletCreation = async (
+    username: string,
+    password: string // ? varaible
+  ): Promise<Signer | undefined> => {
+    if (!username || !password) return;
+    try {
+      setIsLoading(true);
+      const wallet = await connectToSmartWallet(
+        username,
+        password,
+        (status) => {
+          setLoadingStatus(status);
+        }
+      );
+
+      const s = await wallet.getSigner();
+      setIsLoading(false);
+      return s;
+    } catch (error: any) {
+      setIsLoading(false);
+      console.log(error.message);
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -262,6 +306,3 @@ const AuthvPage: NextPage = () => {
 };
 
 export default AuthvPage;
-function generatedUserInfo(signatureBigInt: BigInt): { user: any; pass: any } {
-  throw new Error("Function not implemented.");
-}
