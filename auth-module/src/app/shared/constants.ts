@@ -2,7 +2,7 @@ import { Goerli } from "@thirdweb-dev/chains";
 import * as crypto from "crypto";
 import path from "path";
 
-export const factoryAddress = "0xA70dEB809f8e1fA2b22425Abcc571DD1116BE63d";
+export const factoryAddress = "0x9bd438cE698F45F610CCafC0e5bD69532671857E";
 export const chain = Goerli;
 
 export const THIRD_API_KEY = process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID;

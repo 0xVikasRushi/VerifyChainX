@@ -13,22 +13,29 @@ import {
 import { AppParamList } from "./src/types";
 import { NativeBaseProvider } from "native-base";
 import { headerOptions } from "./src/shared/constant";
+import { LoginStatusProvider } from "./src/context/LoginStatusContext";
 
 const Stack = createStackNavigator<AppParamList>();
 
 function App(): JSX.Element {
   return (
     <NativeBaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginScreen">
-          <Stack.Screen name="LoginScreen" component={LoginScreen} options={headerOptions} />
-          <Stack.Screen name="DashBoard" component={DashBoard} options={headerOptions} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={headerOptions} />
-          <Stack.Screen name="TelegramScreen" component={TelegramScreen} options={headerOptions} />
-          <Stack.Screen name="QVotingScreen" component={QVotingScreen} options={headerOptions} />
-          <Stack.Screen name="QVotingResult" component={QVotingResult} options={headerOptions} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <LoginStatusProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="LoginScreen">
+            <Stack.Screen name="LoginScreen" component={LoginScreen} options={headerOptions} />
+            <Stack.Screen name="DashBoard" component={DashBoard} options={headerOptions} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={headerOptions} />
+            <Stack.Screen
+              name="TelegramScreen"
+              component={TelegramScreen}
+              options={headerOptions}
+            />
+            <Stack.Screen name="QVotingScreen" component={QVotingScreen} options={headerOptions} />
+            <Stack.Screen name="QVotingResult" component={QVotingResult} options={headerOptions} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </LoginStatusProvider>
     </NativeBaseProvider>
   );
 }
