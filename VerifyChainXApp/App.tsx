@@ -2,7 +2,6 @@ import React from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { LoginStatusProvider } from "./src/contexts/LoginStatusContext";
 import {
   DashBoard,
   LoginScreen,
@@ -14,14 +13,15 @@ import {
 import { AppParamList } from "./src/types";
 import { NativeBaseProvider } from "native-base";
 import { headerOptions } from "./src/shared/constant";
+import { LoginStatusProvider } from "./src/context/LoginStatusContext";
 
 const Stack = createStackNavigator<AppParamList>();
 
 function App(): JSX.Element {
   return (
     <NativeBaseProvider>
-      <NavigationContainer>
-        <LoginStatusProvider>
+      <LoginStatusProvider>
+        <NavigationContainer>
           <Stack.Navigator initialRouteName="LoginScreen">
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={headerOptions} />
             <Stack.Screen name="DashBoard" component={DashBoard} options={headerOptions} />
@@ -34,8 +34,8 @@ function App(): JSX.Element {
             <Stack.Screen name="QVotingScreen" component={QVotingScreen} options={headerOptions} />
             <Stack.Screen name="QVotingResult" component={QVotingResult} options={headerOptions} />
           </Stack.Navigator>
-        </LoginStatusProvider>
-      </NavigationContainer>
+        </NavigationContainer>
+      </LoginStatusProvider>
     </NativeBaseProvider>
   );
 }
