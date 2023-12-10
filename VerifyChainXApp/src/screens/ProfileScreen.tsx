@@ -1,8 +1,16 @@
-import Clipboard from "@react-native-clipboard/clipboard";
-import { Avatar, Box, Image } from "native-base";
+import { Avatar, Image, Box } from "native-base";
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ToastAndroid,
+} from "react-native";
 import { AppStackScreenProps } from "../types";
+import Clipboard from "@react-native-clipboard/clipboard";
 
 type ProfileScreenProps = AppStackScreenProps<"ProfileScreen">;
 const ProfileScreen: React.FC<ProfileScreenProps> = () => {
