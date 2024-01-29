@@ -26,7 +26,7 @@ function App(): JSX.Element {
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={headerOptions} />
             <Stack.Screen name="DashBoard" component={DashBoard} options={headerOptions} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={headerOptions} />
-            <Stack.Screen name="QVotingScreen" component={QVotingScreen} options={headerOptions} />
+            {/* <Stack.Screen name="QVotingScreen" component={QVotingScreen} options={headerOptions} /> */}
             <Stack.Screen name="QVoteScreen" component={QVoteScreen} options={headerOptions} />
             <Stack.Screen name="QVotingResult" component={QVotingResult} options={headerOptions} />
             <Stack.Screen name="ResultScreen" component={ResultScreen} options={headerOptions} />
