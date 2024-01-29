@@ -4,8 +4,12 @@
 
 
 ## Technologies we used
-<code><img height="30" src="https://raw.githubusercontent.com/github/explore/28b02bbc9ad9f7a503c43775aebeb515dc2da5fc/topics/nextjs/nextjs.png"></code>
-<code><img height="30" src="https://github.com/0xVikasRushi/VerifyChainX/assets/88543171/163245c3-df0b-42e0-b13a-87acde013d0e"></code>
+- #### <b><code>~/VerifyChainX</code><b>(React Native)<br/>
+- #### <b><code>~/auth-module</code><b>(Nextjs)<br/>
+- #### <b><code>~/Quadratic-Voting</code><b>(Nodejs Express Backend)<br/>
+- #### <b><code>~/erc4337-aadhar-wallet</code><b>(Solidity)<br/>
+- #### <b><code>~/graph/easattestations</code><b>(Nodejs)<br/>
+
 
 ## The problem it solves
 
